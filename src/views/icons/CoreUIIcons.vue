@@ -26,7 +26,7 @@
               sm="2"
               :key="iconName"
             >
-              <CIcon :height="42" :content="icon"/>
+              <CIcon :height="42" :content="icon"/> 
               <div>{{toKebabCase(iconName)}}</div>
             </CCol>
           </template>

@@ -30,6 +30,52 @@ export default [
       },
       {
         _name: 'CSidebarNavTitle',
+        _children: ['Management']
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Schema Management',
+        to: '/manage/schema',
+        icon: 'cil-pencil'
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Link Management',
+        to: '/manage/link',
+        icon: 'cil-pencil'
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Data Management',
+        to: '/manage/data',
+        icon: 'cil-pencil'
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Confirmation Management',
+        to: '/manage/confirmation',
+        icon: 'cil-pencil'
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Version Management',
+        to: '/manage/version',
+        icon: 'cil-pencil'
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'User Management',
+        to: '/manage/user',
+        icon: 'cil-pencil'
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'System Management',
+        to: '/manage/system',
+        icon: 'cil-pencil'
+      },
+      {
+        _name: 'CSidebarNavTitle',
         _children: ['Components']
       },
       {

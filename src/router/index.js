@@ -57,6 +57,15 @@ const Register = () => import('@/views/pages/Register')
 const Users = () => import('@/views/users/Users')
 const User = () => import('@/views/users/User')
 
+//management
+const schemaManage = () => import('@/views/manage/schema')
+const linkManage = () => import('@/views/manage/link')
+const dataManage = () => import('@/views/manage/data')
+const confirmationManage = () => import('@/views/manage/confirmation')
+const versionManage = () => import('@/views/manage/version')
+const userManage = () => import('@/views/manage/user')
+const systemManage = () => import('@/views/manage/system')
+
 Vue.use(Router)
 
 export default new Router({
@@ -78,6 +87,51 @@ function configRoutes () {
           path: 'dashboard',
           name: 'Dashboard',
           component: Dashboard
+        },
+        {
+          path: '/manage',
+          redirect: '/manage/schema',
+          name: 'Management',
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: 'schema',
+              name: 'Schema Management',
+              component: schemaManage
+            },
+            {
+              path: 'link',
+              name: 'Link Management',
+              component: linkManage
+            },
+            {
+              path: 'data',
+              name: 'Data Management',
+              component: dataManage
+            },
+            {
+              path: 'confirmation',
+              name: 'Confirmation Management',
+              component: confirmationManage
+            },
+            {
+              path: 'version',
+              name: 'Version Management',
+              component: versionManage
+            },
+            {
+              path: 'user',
+              name: 'User Management',
+              component: userManage
+            },
+            {
+              path: 'system',
+              name: 'System Management',
+              component: systemManage
+            }
+          ]
         },
         {
           path: 'theme',
