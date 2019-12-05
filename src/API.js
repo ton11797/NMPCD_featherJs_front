@@ -1,10 +1,14 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = '//127.0.0.1:3000'
+axios.defaults.baseURL = 'http://10.1.1.139:3030'
 axios.defaults.withCredentials = true
 const api = {
     schema:{},
-    version:{},
+    version:{
+        getVersion :async()=>{
+            return await axios.get('/versionControl/get-version')
+        }
+    },
     link:{},
     confirm:{},
     data:{},

@@ -15,15 +15,14 @@ export default {
     data(){
         return{
           nodeSize:50,
-          canvas:false,
-          Width:0
+          canvas:false
         }
     },
     computed:{
       options(){
         return{
           force: 3000,
-          size:{ w:window.innerWidth-350, h:500},
+          size:{ h:400},
           nodeSize: this.nodeSize,
           nodeLabels: true,
           linkLabels:true,
