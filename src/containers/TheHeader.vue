@@ -44,7 +44,7 @@
                 class="m-2"
                 color="success"
               >
-                <CDropdownItem>Current version</CDropdownItem>
+                <CDropdownItem @click="changeVersion('current')">Current version</CDropdownItem>
                 <CDropdownDivider/>
                 <CDropdownItem v-for="(el,index) in versions" v-bind:key="index" @click="changeVersion(versions[index])">{{versions[index].versionName}}</CDropdownItem>
                 <CDropdownDivider/>
@@ -66,7 +66,8 @@
           <CIcon name="cil-envelope-open"/>
         </CHeaderNavLink>
       </CHeaderNavItem>
-      <TheHeaderDropdownAccnt/>
+      <CButton  v-if="token===null" variant="outline" color="info" to="/pages/login">login</CButton>
+      <TheHeaderDropdownAccnt v-if="token!==null"/>
     </CHeaderNav>
     <CSubheader class="px-3">
       <CBreadcrumbRouter class="border-0"/>
@@ -94,7 +95,18 @@ export default {
   },
   methods:{
     changeVersion(version){
-      this.$store.commit('updateVersion', version)
+      if(version ==="current"){
+        let current = this.respond.version.find(el=>{ return el.status === 'current'})
+        console.log(current)
+        if(current === undefined){
+          this.$store.commit('updateVersion', {versionName:"!!!! Error",status:"error"})
+        }else{
+          this.$store.commit('updateVersion', current)
+        }
+        
+      }else{
+        this.$store.commit('updateVersion', version)
+      }
     },
     getBadge(status){
       return status === 'current' ? 'success'
@@ -106,6 +118,7 @@ export default {
        this.versions = this.respond.version.filter(el=>{
          return el.status === 'draft'?true:el.status === 'current'?true:false
        })
+       this.changeVersion("current")
     }
   },
   computed: {
@@ -116,11 +129,18 @@ export default {
       }else{
         return this.$store.getters.getVersion
       }
+    },
+    token () {
+      return this.$store.getters.getToken
     }
   },
   watch: {
     versionData (newCount, oldCount) {
       console.log("change version",newCount)
+    },
+    token (newCount, oldCount) {
+      this.navShow = JSON.parse(JSON.stringify(nav))
+      this.navShow[0]._children = this.navShow[0]._children.filter(el=>{return el.requireAuth === undefined})
     }
   }
 }
