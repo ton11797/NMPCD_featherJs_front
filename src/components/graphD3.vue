@@ -1,7 +1,14 @@
 <template>
     <div>
-        <d3-network @node-click='clickNode' :net-nodes="data.nodes" :net-links="data.links" :options="options" />
-    </div>
+        <d3-network @node-click='clickNode' :net-nodes="data.nodes" :net-links="data.links" :options="options"/>
+          <!-- <CButtonGroup class="float-right">
+            <CButton color="secondary">One</CButton>
+            <CButton color="secondary">Two</CButton>
+            <CButton color="secondary">Three</CButton>
+            <CButton color="secondary">Four</CButton>
+            <CButton color="secondary" class="d-sm-down-none">Five</CButton>
+        </CButtonGroup> -->
+        </div>
 </template>
 
 <script>
@@ -25,15 +32,23 @@ export default {
           size:{ h:400},
           nodeSize: this.nodeSize,
           nodeLabels: true,
-          linkLabels:true,
+          // linkLabels:true,
           canvas: this.canvas
         }
       }
     },
     methods: {
       clickNode(e,n){
-        console.log(e)
-        console.log(n)
+        if(n.pinned === true){
+          n.pinned = false
+          n.fx = null
+          n.fy = null
+        }else{
+          n.pinned = true
+          n.fx = n.x
+          n.fy = n.y
+        }
+        
       }
     },
 }

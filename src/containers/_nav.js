@@ -30,49 +30,57 @@ export default [
       },
       {
         _name: 'CSidebarNavTitle',
-        _children: ['Management']
+        _children: ['Management'],
+        requireAuth:true
       },
       {
         _name: 'CSidebarNavItem',
         name: 'Schema Management',
         to: '/manage/schema',
-        icon: 'cil-pencil'
+        icon: 'cil-pencil',
+        requireAuth:true
       },
       {
         _name: 'CSidebarNavItem',
         name: 'Link Management',
         to: '/manage/link',
-        icon: 'cil-pencil'
+        icon: 'cil-pencil',
+        requireAuth:true
       },
       {
         _name: 'CSidebarNavItem',
         name: 'Data Management',
         to: '/manage/data',
-        icon: 'cil-pencil'
+        icon: 'cil-pencil',
+        requireAuth:true
       },
       {
         _name: 'CSidebarNavItem',
         name: 'Confirmation Management',
         to: '/manage/confirmation',
-        icon: 'cil-pencil'
+        icon: 'cil-pencil',
+        requireAuth:true
       },
       {
         _name: 'CSidebarNavItem',
         name: 'Version Management',
         to: '/manage/version',
-        icon: 'cil-pencil'
+        icon: 'cil-pencil',
+        requireAuth:true
       },
       {
         _name: 'CSidebarNavItem',
         name: 'User Management',
         to: '/manage/user',
-        icon: 'cil-pencil'
+        icon: 'cil-pencil',
+        requireAuth:true
       },
       {
         _name: 'CSidebarNavItem',
         name: 'System Management',
         to: '/manage/system',
-        icon: 'cil-pencil'
+        icon: 'cil-pencil',
+        requireAuth:true
       },
       {
         _name: 'CSidebarNavTitle',

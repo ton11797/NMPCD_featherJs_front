@@ -17,14 +17,19 @@
       </CCardHeader>
       <CCardBody>
         <CDataTable
-          :items="data.nodes"
+          :items="dataTable.nodes"
           :fields="fields"
         >
-        <!-- <template #status="{item}">
+        <template #status="{item}">
           <td>
-            <CBadge :color="getBadge(item.status)">{{item.status}}</CBadge>
+            <CBadge :color="getBadge(item.status)">{{item.status.charAt(0).toUpperCase() + item.status.slice(1) }}</CBadge>
           </td>
-        </template> -->
+        </template>
+        <template #ref="{item}">
+          <td>
+            {{keyMap[item.ref]!==undefined?keyMap[item.ref].versionName:'-'}}
+          </td>
+        </template>
       </CDataTable>
       </CCardBody>
     </CCard>
@@ -32,6 +37,7 @@
 </template>
 
 <script>
+import _ from 'lodash';
 import api from '@/API'
 import graphD3 from '@/components/graphD3'
 export default {
@@ -41,44 +47,10 @@ export default {
     return{
       keyMap:{},
       items:[],
-      respond:{
-        "version": [
-            {
-                "changeDate": "12/5/2019, 11:01:53 PM",
-                "versionName": "V1_test701",
-                "uuid": "8df9bc90-1778-11ea-ac9a-a5e235070e44",
-                "createDate": "12/5/2019, 11:01:53 PM",
-                "status": "draft"
-            },
-            {
-                "changeDate": "12/4/2019, 5:58:17 PM",
-                "versionName": "V0_test533",
-                "uuid": "fa0d4810-1684-11ea-bdc8-03cedcd02ff3",
-                "createDate": "12/4/2019, 5:58:17 PM",
-                "status": "draft"
-            },
-            {
-                "changeDate": "12/4/2019, 5:58:17 PM",
-                "versionName": "V2_testRef533",
-                "uuid": "fa16e500-1684-11ea-bdc8-03cedcd02ff3",
-                "createDate": "12/4/2019, 5:58:17 PM",
-                "status": "draft"
-            },
-            {
-                "changeDate": "12/4/2019, 2:26:52 PM",
-                "versionName": "V1_test533",
-                "uuid": "70e1cbf0-1667-11ea-bdc8-03cedcd02ff3",
-                "createDate": "12/4/2019, 2:26:52 PM",
-                "status": "draft"
-            }
-        ],
-        "relation": [
-            {
-                "start": "70e1cbf0-1667-11ea-bdc8-03cedcd02ff3",
-                "end": "fa16e500-1684-11ea-bdc8-03cedcd02ff3"
-            }
-        ]
-    },
+      respond:{},
+      dataTable:{
+        nodes:[]
+      },
       data:{
         nodes:[],
         links:[]
@@ -92,28 +64,43 @@ export default {
       ]
     }
   },
-beforeMount(){
+  beforeMount(){
     this.fetchData()
   },
   computed:{
 
   },
   methods: {
+    getBadge(status){
+      return status === 'current' ? 'success'
+        : status === 'draft' ? 'secondary'
+          : status === 'final' ? 'primary'
+            : status === 'remove' ? 'danger' : 'dark'
+    },
     async fetchData(){
       this.respond = (await api.version.getVersion()).data.result
       // console.log(this.respond)
       this.data.nodes = this.respond.version.map(el=>{
         this.keyMap[el.uuid] = el
         el.id = el.uuid
+        if(el.status ==="current" ){
+          el._color = '#2eb85c'
+        }else if(el.status ==="remove"){
+          el._color = '#e55353'
+        }
         el.name = el.versionName
         return el
       })
+      // this.keyMap =_.cloneDeep(this.keyMap)
       this.data.links = this.respond.relation.map(el=>{
         this.keyMap[el.end].ref = el.start
         el.sid = el.start
         el.tid = el.end
         return el
       })
+      this.dataTable =_.cloneDeep(this.data)
+      this.keyMap =_.cloneDeep(this.keyMap)
+      
     }
   }
 }

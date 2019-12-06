@@ -9,12 +9,14 @@
                 <h1>Login</h1>
                 <p class="text-muted">Sign In to your account</p>
                 <CInput
+                  v-model="email"
                   placeholder="Username"
                   autocomplete="username email"
                 >
                   <template #prepend-content><CIcon name="cil-user"/></template>
                 </CInput>
                 <CInput
+                  v-model="password"
                   placeholder="Password"
                   type="password"
                   autocomplete="curent-password"
@@ -23,7 +25,7 @@
                 </CInput>
                 <CRow>
                   <CCol col="6">
-                    <CButton color="primary" class="px-4">Login</CButton>
+                    <CButton color="primary" class="px-4" @click="login">Login</CButton>
                   </CCol>
                   <CCol col="6" class="text-right">
                     <CButton color="link" class="px-0">Forgot password?</CButton>
@@ -31,6 +33,9 @@
                 </CRow>
               </CForm>
             </CCardBody>
+            <footer>
+              <h6 v-if="alert!==''" class="text-danger">Username or password is incorrect</h6>
+            </footer>
           </CCard>
           <CCard
             color="primary"
@@ -42,6 +47,7 @@
             <h2>Sign up</h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             <CButton
+              :disabled="false"
               color="primary"
               class="active mt-3"
             >
@@ -55,7 +61,40 @@
 </template>
 
 <script>
+import api from '@/API'
 export default {
-  name: 'Login'
+  name: 'Login',
+  beforeCreate(){
+    let token = this.$store.getters.getToken
+    if(token !== null){
+      this.$router.push('/')
+    }
+  },
+  data(){
+    return{
+      email:"",
+      password:"",
+      respond:{},
+      alert:""
+    }
+  },
+  methods:{
+    async login(){
+      try {
+        this.respond = (await api.user.login(this.email,this.password)).data
+        this.$store.commit('updateToken', this.respond.accessToken)
+        this.alert = ""
+        this.$router.push('/')
+      } catch (error) {
+        console.log(error)
+        this.alert = true
+        if(error.response.status===401){
+          this.alert = "Username or password is incorrect"
+        }else{
+          this.alert = error.response.statusText
+        }
+      }
+    }
+  }
 }
 </script>

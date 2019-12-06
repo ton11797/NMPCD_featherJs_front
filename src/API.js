@@ -12,7 +12,16 @@ const api = {
     link:{},
     confirm:{},
     data:{},
-    user:{},
+    user:{
+        login :async(email,password)=>{
+            let request = {
+                strategy: "local",
+                email: email,
+                password: password
+            }
+            return await axios.post('/authentication',request)
+        }
+    },
     system:{}
 }
 export default api
