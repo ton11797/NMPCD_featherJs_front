@@ -28,7 +28,7 @@ export default {
     computed:{
       options(){
         return{
-          force: 3000,
+          force: 1500,
           size:{ h:400},
           nodeSize: this.nodeSize,
           nodeLabels: true,
