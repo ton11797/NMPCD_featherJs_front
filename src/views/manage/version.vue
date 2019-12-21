@@ -67,7 +67,7 @@
         <CIcon name="cil-drop" />Version List
       </CCardHeader>
       <CCardBody>
-            <CButton color="success" class="float-right" @click="showCreate=true" v-scroll-to="'#top'">Create new version</CButton>
+            <CButton color="success" class="float-right" @click="changeCreate" >Create new version</CButton>
         <br>
         <br>
         <br>
@@ -87,7 +87,6 @@
                 variant="outline"
                 color="warning"
                 @click="changeStatus(item)"
-                v-scroll-to="'#top'"
               >Change status</CButton>
             </td>
           </template>
@@ -152,8 +151,17 @@ export default {
       this.Create.ref = value
     },
     changeStatus(object) {
+      window.scrollTo(0, 400);
       this.showChange = true;
       this.Change = object;
+    },
+    changeCreate() {
+      window.scrollTo(0, 400);
+      this.Create= {
+        versionName:"",
+        ref:'none'
+      }
+      this.showCreate = true;
     },
     getBadge(status) {
       return status === "current"

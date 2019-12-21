@@ -1,10 +1,17 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://10.1.1.139:3030'
+axios.defaults.baseURL = 'http://127.0.0.1:3030'
 axios.defaults.withCredentials = true
 let token ="test"
 const api = {
-    schema:{},
+    schema:{
+        getSchemaVersion:async(versionUUID)=>{
+            return await axios.get(`/schema/${versionUUID}`)
+        },
+        editSchema:async(data)=>{
+            return await axios.post(`/schema`,data)
+        }
+    },
     version:{
         getVersion :async()=>{
             console.log(token)
