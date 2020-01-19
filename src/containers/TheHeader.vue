@@ -110,13 +110,14 @@ export default {
     },
     getBadge(status){
       return status === 'current' ? 'success'
-              : status === 'draft' ? 'warning': 'danger'
+              : status === 'draft' ? 'warning'
+              : status === 'final' ? 'primary' : 'danger'
     },
     async fetchData(){
       console.log("fetchData")
        this.respond = (await api.version.getVersion()).data.result
        this.versions = this.respond.version.filter(el=>{
-         return el.status === 'draft'?true:el.status === 'current'?true:false
+         return el.status === 'draft'?true:el.status === 'current'?true:el.status === 'final'?true:false
        })
        this.changeVersion("current")
     }

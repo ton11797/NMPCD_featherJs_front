@@ -59,7 +59,8 @@ const User = () => import('@/views/users/User')
 
 //management
 const schemaManage = () => import('@/views/manage/schema')
-const linkManage = () => import('@/views/manage/link')
+const schemaLinkManage = () => import('@/views/manage/schemalink')
+const dataLinkManage = () => import('@/views/manage/datalink')
 const dataManage = () => import('@/views/manage/data')
 const confirmationManage = () => import('@/views/manage/confirmation')
 const versionManage = () => import('@/views/manage/version')
@@ -102,9 +103,13 @@ function configRoutes () {
               component: schemaManage
             },
             {
-              path: 'link',
-              name: 'Link Management',
-              component: linkManage
+              path: 'schemaLink',
+              name: 'Schema Link Management',
+              component: schemaLinkManage
+            },{
+              path: 'dataLink',
+              name: 'Data Link Management',
+              component: dataLinkManage
             },
             {
               path: 'data',

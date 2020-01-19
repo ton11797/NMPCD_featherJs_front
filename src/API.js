@@ -29,9 +29,24 @@ const api = {
             }
         }
     },
-    link:{},
+    link:{
+        createMetaLink :async(request)=>{
+            return await axios.post('/link/meta-link',request)
+        }
+    },
     confirm:{},
-    data:{},
+    data:{
+        searchData:async(request)=>{
+            return await axios.post('/data/search-data',request)
+        },
+        insertData:async(request)=>{
+            return await axios.post('/data/insert',request)
+            
+        },
+        insertConfirm:async(request)=>{
+            return await axios.post('/data/insert-confirm',request)
+        }
+    },
     user:{
         login :async(email,password)=>{
             console.log(token)

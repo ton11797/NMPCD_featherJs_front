@@ -28,6 +28,11 @@ export default {
     TheSidebar,
     TheHeader,
     TheFooter
+  },
+  beforeCreate(){
+    if(localStorage.getItem("token")!== null){
+      this.$store.commit('updateToken', localStorage.getItem("token"))
+    }
   }
 }
 </script>

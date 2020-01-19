@@ -42,8 +42,15 @@ export default [
       },
       {
         _name: 'CSidebarNavItem',
+        name: 'Schema Link Management',
+        to: '/manage/schemaLink',
+        icon: 'cil-pencil',
+        requireAuth:true
+      },
+      {
+        _name: 'CSidebarNavItem',
         name: 'Link Management',
-        to: '/manage/link',
+        to: '/manage/dataLink',
         icon: 'cil-pencil',
         requireAuth:true
       },

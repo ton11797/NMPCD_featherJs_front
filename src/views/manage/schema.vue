@@ -37,7 +37,7 @@
               <CButton class="float-right" color="info" @click="addField">Add</CButton>
               <br>
               <br>
-              <CDataTable :items="Create.fields" :fields="fieldsCreate">
+              <CDataTable ref="vuetable" :items="Items" :fields="fieldsCreate">
                   <template #action="item">
             <td>
                 <CLink class="card-header-action btn-close" @click="removeField(item)">
@@ -51,7 +51,7 @@
           </CCard>
           <CButtonGroup class="float-right">
             <CButton color="info" @click="schemaCreateUpdate">{{showForm===1?"Create":"Edit"}}</CButton>
-            <CButton color="secondary" @click="showForm=0">Cancel</CButton>
+            <CButton color="secondary" @click="showForm=0;Alert=''">Cancel</CButton>
           </CButtonGroup>
         </CForm>
       </CCardBody>
@@ -97,13 +97,12 @@
 <script>
 import _ from "lodash";
 import api from "@/API";
-import graphD3 from "@/components/graphD3";
 export default {
-  name: "VersionManagement",
-  components: { graphD3 },
+  name: "SchemaManagement",
   data() {
     return {
-        selected:"",
+      tableReload:false,
+      selected:"",
       dataTable: [],
       Alert: "",
       showForm: 0, //0=notshow 1=create 2=edit
@@ -131,7 +130,6 @@ export default {
   beforeMount() {
     this.fetchData();
   },
-  computed: {},
   methods: {
     removeField(item){
         if(this.showForm ===2){
@@ -142,11 +140,11 @@ export default {
                 this.Create.fields[item.index]._classes="table-danger"
                 this.Create.fields[item.index].delete = true
             }
-            this.Create.fields = this.Create.fields.slice(0)
+            this.Create.fields = [...this.Create.fields]
         }else{
             this.Create.fields.splice(item.index, 1);
         }
-        console.log(item)
+        this.$refs.vuetable.$forceUpdate()
     },
     addField(){
         if(this.fieldAdd.fieldName === "" || this.fieldAdd.type==="" || this.fieldAdd.length ==="" || this.fieldAdd === 0)return ""
@@ -197,6 +195,7 @@ export default {
                 result[i]= error
             }
         }
+        this.Alert = ""
         await this.fetchData()
         this.showForm = 0
         this.Create = {
@@ -235,9 +234,13 @@ export default {
   computed: {
     versionUUID() {
       return this.$store.getters.getVersion.uuid;
-    }
+    },
+    Items() {
+    return this.Create.fields;
+    },
   },
   watch: {
+    // eslint-disable-next-line no-unused-vars
     async versionUUID(newCount, oldCount) {
       await this.fetchData();
     }
