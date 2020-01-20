@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://127.0.0.1:3030'
+axios.defaults.baseURL = process.env.NODE_ENV === 'production'?'http://nmpcd.devinice.com':'http://127.0.0.1:3030'
 axios.defaults.withCredentials = true
 let token ="test"
 const api = {
