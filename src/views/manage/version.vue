@@ -180,7 +180,6 @@ export default {
           return ""
           }
         try {
-          let respond ={}
           if(this.Create.ref ==='none'){
             await api.version.createVersion(this.Create.versionName,undefined)
           }else{

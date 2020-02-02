@@ -45,6 +45,9 @@ const api = {
         },
         insertConfirm:async(request)=>{
             return await axios.post('/data/insert-confirm',request)
+        },
+        insertFile:async(request)=>{
+            return await axios.post('/data/insert-file',request)
         }
     },
     user:{
