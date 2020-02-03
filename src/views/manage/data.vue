@@ -72,9 +72,11 @@
         <CIcon name="cil-drop" />View schema data
       </CCardHeader>
       <CCardBody>
-        <CButton color="success" class="float-right" @click="showImport">Import data</CButton>
+        <CButtonGroup class="float-right">
+        <CButton color="info" @click="showfilter=!showfilter;filterCriteria={};fetchItems()">{{showfilter?"Show":"Hide"}} filter</CButton>
+        <CButton color="success" @click="showImport">Import data</CButton>
+        </CButtonGroup>
         <br />
-        
         <CSelect
           ref="selectSchema"
           :key="componentKey"
@@ -83,6 +85,8 @@
           placeholder="Please select"
           :options="data.nodes"
         />
+        <searchCriteria v-if="!showfilter" :data="fieldsArray" @applyFilter="applyFilter"/>
+        <br>
         <CDataTable v-if="items!==[] && schema !==''" :items="items" :fields="fields" pagination>
           <template #show_details="item">
             <td>
@@ -103,15 +107,17 @@ import api from "@/API";
 import axios from "axios";
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import showDetail from '../../components/showDetail'
+import searchCriteria from '../../components/searchCriteria'
 import XLSX from 'xlsx'
-import fs from 'fs'
 export default {
   name: "DataManagement",
   components: {
-    PulseLoader,showDetail
+    PulseLoader,showDetail,searchCriteria
   },
   data() {
     return {
+      filterCriteria:{},
+      showfilter:false,
       data: {
         nodes: []
       },
@@ -126,6 +132,7 @@ export default {
       updateTable: 0,
       items: [],
       fields: [],
+      fieldsArray: [],
       Alert: "",
       schema: "",
       componentKey: 0,
@@ -164,6 +171,10 @@ export default {
     this.fetchData();
   },
   methods: {
+    applyFilter(filter){
+      this.filterCriteria = filter
+      this.fetchItems()
+    },
     async submitFileData(){
       const request = {
         fileName:this.fileUploadName,
@@ -296,12 +307,15 @@ export default {
       });
     },
     async selectSchema(e) {
+      this.filterCriteria = {}
       this.schema = e;
+      this.fieldsArray = []
       this.fields = this.respond.result.schema[e].map(el => {
         let field = {
           key: el.fieldName.toLowerCase(),
           label: el.fieldName
         };
+        this.fieldsArray.push(el.fieldName)
         return field;
       });
       this.fields.push({
@@ -316,8 +330,19 @@ export default {
     async fetchItems() {
       let request = {
         schemaName: this.schema,
-        versionUUID: this.versionUUID
+        versionUUID: this.versionUUID,
+        condition:{},
+        like:{}
       };
+      if(this.filterCriteria !== {}){
+        Object.keys(this.filterCriteria).map(el=>{
+          if(this.filterCriteria[el].filter ==="match"){
+            request.condition[this.filterCriteria[el].field] = this.filterCriteria[el].criteria
+          }else{
+            request.like[this.filterCriteria[el].field] = this.filterCriteria[el].criteria
+          }
+        })
+      }
       const respond = (await api.data.searchData(request)).data;
       this.items = respond.rows;
       console.log(respond);
