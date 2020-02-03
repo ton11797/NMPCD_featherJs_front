@@ -6,7 +6,8 @@
           label="Filter field"
           @update:value="changeField"
           placeholder="Please select"
-          :options="data.fields"
+          :key="componentKey"
+          :options="data"
         />
       </CCol>
       <CCol sm="5">
@@ -26,8 +27,8 @@
     <br>
     <div class="text-center">
     <CButtonGroup v-if="showDetail" >
-            <CButton color="info" @click="Apply">Apply filter</CButton>
-            <CButton color="secondary" @click="Clear">Clear filter</CButton>
+        <CButton color="info" @click="Apply">Apply filter</CButton>
+        <CButton color="secondary" @click="Clear">Clear filter</CButton>
     </CButtonGroup>
     </div>
   </div>
@@ -35,15 +36,26 @@
 <script>
 export default {
   name: "searchCriteria",
-  props: { data: Object },
+  props: { data: Array },
   data() {
     return {
         Field:"",
         Criteria:"",
         Detail:{},
         criteriaText:"",
-        showDetail:false
+        showDetail:false,
+        componentKey:0
     };
+  },
+  watch: {
+    // eslint-disable-next-line no-unused-vars
+    async data(newCount, oldCount) {
+        this.componentKey +=1
+        this.Criteria =""
+        this.Detail = {}
+        this.showDetail = false
+        this.criteriaTextGen()
+    }
   },
   methods:{
       Apply(){
@@ -52,6 +64,7 @@ export default {
       Clear(){
           this.Detail={}
           this.showDetail = false
+          this.criteriaTextGen()
           this.$emit('applyFilter',this.Detail)
       },
       matchAdd(){
