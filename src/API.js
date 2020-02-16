@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = process.env.NODE_ENV === 'production'?'http://nmpcd.devinice.com':'http://127.0.0.1:3030'
+axios.defaults.baseURL = process.env.NODE_ENV === 'production'?'http://nmpcd.devinice.com:443':'http://127.0.0.1:3030'
 axios.defaults.withCredentials = true
 let token ="test"
 const api = {
@@ -38,6 +38,9 @@ const api = {
     data:{
         searchData:async(request)=>{
             return await axios.post('/data/search-data',request)
+        },
+        searchRelation:async(request)=>{
+            return await axios.post('/data/search-relate',request)
         },
         insertData:async(request)=>{
             return await axios.post('/data/insert',request)

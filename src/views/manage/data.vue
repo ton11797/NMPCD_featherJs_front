@@ -90,9 +90,9 @@
         <CDataTable v-if="items!==[] && schema !==''" :items="items" :fields="fields" pagination>
           <template #show_details="item">
             <td>
-              <CLink class="card-header-action btn-close" @click="removeRow(item)">
-                <CIcon name="cil-x-circle" />
-              </CLink>
+                <router-link :to="`/manage/data/${schema}/${item.item._uuid}`">
+                <CIcon name="cil-options" />
+                </router-link>
             </td>
           </template>
         </CDataTable>

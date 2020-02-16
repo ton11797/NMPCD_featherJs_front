@@ -30,6 +30,16 @@ export default [
       },
       {
         _name: 'CSidebarNavTitle',
+        _children: ['Test Component']
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Component',
+        to: '/test',
+        icon: 'cil-pencil'
+      },
+      {
+        _name: 'CSidebarNavTitle',
         _children: ['Management'],
         requireAuth:true
       },

@@ -62,10 +62,14 @@ const schemaManage = () => import('@/views/manage/schema')
 const schemaLinkManage = () => import('@/views/manage/schemalink')
 const dataLinkManage = () => import('@/views/manage/datalink')
 const dataManage = () => import('@/views/manage/data')
+const dataDetail = () => import('@/views/manage/dataDetail')
 const confirmationManage = () => import('@/views/manage/confirmation')
 const versionManage = () => import('@/views/manage/version')
 const userManage = () => import('@/views/manage/user')
 const systemManage = () => import('@/views/manage/system')
+
+//test
+const testComponent = () => import('@/views/test')
 
 Vue.use(Router)
 
@@ -88,6 +92,11 @@ function configRoutes () {
           path: 'dashboard',
           name: 'Dashboard',
           component: Dashboard
+        },
+        {
+          path: 'test',
+          name: 'testComponent',
+          component: testComponent
         },
         {
           path: '/manage',
@@ -114,7 +123,21 @@ function configRoutes () {
             {
               path: 'data',
               name: 'Data Management',
-              component: dataManage
+              component: {
+                render (c) { return c('router-view') }
+              },
+              children: [
+                {
+                  path: '',
+                  component: dataManage,
+                },
+                {
+                  path: ':schema/:uuid',
+                  meta: { label: 'Data Details'},
+                  name: 'Data Details',
+                  component: dataDetail,
+                },
+              ]
             },
             {
               path: 'confirmation',
