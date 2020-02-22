@@ -16,6 +16,7 @@
         <h1 v-if="currentRelationDataLength ===0">No relate data</h1>
         <div v-if="currentRelationDataLength !==0">
           <div v-for="(el,index) in Object.keys(currentRelationData)" v-bind:key="index">
+            <h3>Schema:{{el}}</h3>
             <CDataTable :items="currentRelationData[el]" :fields="nodes[el].fieldArray" pagination>
           <template #show_details="item">
             <td>
@@ -114,6 +115,8 @@ export default {
                 condition:{_uuid:this.$route.params.uuid},
                 like:{}
             };
+            console.log("request1")
+            console.log(request1)
             this.data = (await api.data.searchData(request1)).data.rows[0];
             this.dataDetail = [{field:"UUID",value:this.data._uuid}]
             await this.nodes[this.$route.params.schema].field.forEach(async el=>{
@@ -126,31 +129,43 @@ export default {
                 schemaName: this.$route.params.schema,
                 uuid: this.data._uuid,
             };
+            console.log("request2")
+            console.log(request2)
             this.dataRelation = (await api.data.searchRelation(request2)).data
             let versionSelect = '_' + this.versionUUID.replace(/-/g,"")
-            const currentRelationTmp = await this.dataRelation.filter(async el=>{
-              for(let i = 0;i<el.startLable.length;i++){
-                if(el.startLable[i] === versionSelect){
+            const currentRelationTmp =  this.dataRelation.filter( el=>{
+              // for(let i = 0;i<el.startLable.length;i++){
+              //   if(el.startLable[i] === versionSelect){
+              //     return true;
+              //   }
+              // }
+              if(el.type === versionSelect){
+                  console.log("TRUE ",el.type,versionSelect)
                   return true;
-                }
               }
-              return false
             })
             this.currentRelation = {}
-            await currentRelationTmp.forEach(async el=>{
+            console.log("currentRelationTmp")
+            console.log(currentRelationTmp)
+            currentRelationTmp.forEach( el=>{
               let key = ""
+              // let mark = false
               for(let i = 0;i<el.endLable.length;i++){
-                if(el.endLable[i] !== versionSelect && el.endLable[i] !== '_data' && el.endLable[i][0] === '_'){
+                if(el.endLable[i] !== versionSelect && el.endLable[i] !== '_data' && el.endLable[i][0] === '_' && el.endLable[i].length !== 33){
                   key = el.endLable[i].replace("_","")
                 }
+                // if(el.endLable[i] === versionSelect)mark =true
               }
-              if(this.currentRelation[key] === undefined){
-                this.currentRelation[key] = [el.end.uuid]
-              }else{
-                this.currentRelation[key].push(el.end.uuid)
-              }
-              
+              // if(mark){
+                if(this.currentRelation[key] === undefined){
+                  this.currentRelation[key] = [el.end.uuid]
+                }else{
+                  this.currentRelation[key].push(el.end.uuid)
+                }
+              // }
             })
+            console.log("this.currentRelation")
+            console.log(this.currentRelation)
             await Object.keys(this.currentRelation).forEach(async elKey=>{
               for(let i = 0;i<this.currentRelation[elKey].length;i++){
                 
