@@ -32,6 +32,9 @@ const api = {
     link:{
         createMetaLink :async(request)=>{
             return await axios.post('/link/meta-link',request)
+        },
+        createDataLink :async(request)=>{
+            return await axios.post('/link/data-link',request)
         }
     },
     confirm:{},
