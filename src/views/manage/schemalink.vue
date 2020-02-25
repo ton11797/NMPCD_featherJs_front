@@ -28,7 +28,7 @@
                 </CButtonGroup>
               </CTab>
               <CTab title="Edit link">
-                2. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                <!-- 2. Lo rem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore -->
               </CTab>
             </CTabs>
       </CCardBody>

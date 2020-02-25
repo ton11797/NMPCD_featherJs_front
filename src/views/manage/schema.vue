@@ -23,7 +23,7 @@
                   <CInput label="Field name" placeholder="Field name" v-model="fieldAdd.fieldName"/>
                 </CCol>
                 <CCol sm="5">
-                  <CSelect id="seletType" label="Data type" @update:value="changeType" placeholder="Please select" :options="[{value:'varchar'}]" />
+                  <CSelect id="seletType" label="Data type" value="varchar" @update:value="changeType" placeholder="Please select" :options="[{value:'varchar'}]" />
                 </CCol>
                 <CCol sm="2">
                   <CInput
@@ -50,7 +50,7 @@
             </CCardBody>
           </CCard>
           <CButtonGroup class="float-right">
-            <CButton color="info" @click="schemaCreateUpdate">{{showForm===1?"Create":"Edit"}}</CButton>
+            <CButton color="info" @click="schemaCreateUpdate">{{showForm===1?"Create":"Save"}}</CButton>
             <CButton color="secondary" @click="showForm=0;Alert=''">Cancel</CButton>
           </CButtonGroup>
         </CForm>
@@ -108,7 +108,7 @@ export default {
       showForm: 0, //0=notshow 1=create 2=edit
       fieldAdd:{
           fieldName:"",
-          type:"",
+          type:"varchar",
           length:""
       },
       Create: {
@@ -147,8 +147,27 @@ export default {
         this.$refs.vuetable.$forceUpdate()
     },
     addField(){
-        if(this.fieldAdd.fieldName === "" || this.fieldAdd.type==="" || this.fieldAdd.length ==="" || this.fieldAdd === 0)return ""
-        if(this.Create.fields.find(el=>{ return el.fieldName === this.fieldAdd.fieldName}) !== undefined){
+        if(this.fieldAdd.fieldName === ""){
+          this.Alert = "Field name empty"
+          return ""
+        }
+        if(this.fieldAdd.type===""){
+          this.Alert = "Field type empty"
+          return ""
+        }
+        if(this.fieldAdd.length ===""){
+          this.Alert = "Field length empty"
+          return ""
+        }
+        if(this.fieldAdd.length.length >4){
+          this.Alert = "length max 9999"
+          return ""
+        }
+        if(parseInt(this.fieldAdd.length) <= 0){
+          this.Alert = "length minimum 1 "
+          return ""
+        }
+        if(this.Create.fields.find(el=>{ return el.fieldName.toLowerCase() === this.fieldAdd.fieldName.toLowerCase()}) !== undefined){
             this.Alert = "Field name dupicate"
             return ""
         }else{
@@ -163,6 +182,14 @@ export default {
       this.fieldAdd.type = value
     },
     async schemaCreateUpdate() {
+        if(this.showForm ===1){
+
+        
+        if( this.dataTable.find(el=>{ return el.schemaName.toLowerCase() === this.Create.schemaName.toLowerCase()}) !== undefined){
+            this.Alert = "Schema name dupicate"
+            return ""
+        }
+        }
         let template = {
             versionUUID:this.versionUUID,
             schemaName:this.Create.schemaName,
@@ -176,14 +203,19 @@ export default {
                 template.action="delete"
                 countDelete++
                 template.send = true
+            }else{
+                template.action="create"
+                delete template.send
             }
             if(el.new)template.send = true
             template.fieldName = el.fieldName
             template.type = el.type
             return _.cloneDeep(template);
         })
+        console.log(request)
+        // return ''
         if(countDelete === this.Create.fields.length){
-            this.Alert = "You can't remove all field"
+            this.Alert = "can't save schema without attribute"
             return ""
         }
         let result = []

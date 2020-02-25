@@ -34,10 +34,10 @@
             <dd class="col-sm-9">{{Change.changeDate}}</dd>
           </dl>
         </div>
-        <CSelect label="Change status to" @update:value="ChangeNew" :options="['Current','Draft','Remove','Final']"/>
+        <CSelect v-if="Change.status !== 'remove'" label="Change status to" @update:value="ChangeNew" :value="Change.status.charAt(0).toUpperCase()+ Change.status.slice(1)" :options="['Draft','Current','Final','Remove']"/>
         <CButtonGroup class="float-right">
-            <CButton color="info" @click="changeStatusAPI">Save</CButton>
-            <CButton color="secondary" @click="showChange=false">Cancel</CButton>
+            <CButton color="info" v-if="Change.status !== 'remove'" @click="changeStatusAPI">Save</CButton>
+            <CButton color="secondary" @click="showChange=false;Alert=''">Cancel</CButton>
         </CButtonGroup>
       </CCardBody>
     </CCard>
@@ -57,7 +57,7 @@
             <CSelect label="Reference" @update:value="changeRef" :options="[{value:'none'},...(dataTable.nodes)]"/>
             <CButtonGroup class="float-right">
               <CButton color="info" @click="createVersionAPI">Create</CButton>
-              <CButton color="secondary" @click="showCreate=false">Cancel</CButton>
+              <CButton color="secondary" @click="showCreate=false;Alert=''">Cancel</CButton>
             </CButtonGroup>
         </CForm>
           </CCardBody>
