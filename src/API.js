@@ -58,7 +58,6 @@ const api = {
     },
     user:{
         login :async(email,password)=>{
-            console.log(token)
             let request = {
                 strategy: "local",
                 email: email,
@@ -70,6 +69,19 @@ const api = {
             return respond
         }
     },
-    system:{}
+    system:{
+        getConfig :async()=>{
+            const respond = await axios.get('/systemManage/config')
+            return respond
+        },
+        updateConfig :async(newConfig)=>{
+            const respond = await axios.post('/systemManage/config',newConfig)
+            return respond
+        },
+        resetDatabase :async()=>{
+            const respond = await axios.post('/systemManage/reset',{})
+            return respond
+        }
+    }
 }
 export default api
