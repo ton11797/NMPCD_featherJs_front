@@ -36,6 +36,9 @@
               </CCol>
             </CRow>
           </CCardBody>
+          <CCardFooter class="text-right">
+            <CButton color="info" size="sm" @click="updateConfig">Save</CButton>
+          </CCardFooter>
         </CCard>
       </CCol>
       <CCol sm="6">
@@ -60,6 +63,7 @@ export default {
   data() {
     return {
       loading:true,
+      confirmConfigChange:false,
       respond:{},
       labelIcon: {
         labelOn: "\u2713",
@@ -80,13 +84,13 @@ export default {
     },
     async updateConfig(){
       try {
-        this.respond = (await api.system.updateConfig(this.respond)).data
+        await api.system.updateConfig(this.respond)
         console.log(respond)
       } catch (error) {}
     },
     async resetDatabase(){
       try {
-        this.respond = (await api.system.resetDatabase()).data
+        await api.system.resetDatabase()
         console.log(respond)
       } catch (error) {}
     }
