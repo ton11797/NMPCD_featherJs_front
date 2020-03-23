@@ -83,6 +83,9 @@ export default {
       this.loading = false
     },
     async updateConfig(){
+      if(!confirm("Confirm")){
+        return ''
+      }
       try {
         await api.system.updateConfig(this.respond)
         console.log(respond)
