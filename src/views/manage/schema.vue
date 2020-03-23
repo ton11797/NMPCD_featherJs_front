@@ -50,7 +50,7 @@
             </CCardBody>
           </CCard>
           <CButtonGroup class="float-right">
-            <CButton color="info" @click="schemaCreateUpdate">{{showForm===1?"Create":"Save"}}</CButton>
+            <CButton color="info" @click="Modal=true;schemaCreateUpdate()">{{showForm===1?"Create":"Save"}}</CButton>
             <CButton color="secondary" @click="showForm=0;Alert=''">Cancel</CButton>
           </CButtonGroup>
         </CForm>
@@ -101,6 +101,7 @@ export default {
   name: "SchemaManagement",
   data() {
     return {
+      Modal:false,
       tableReload:false,
       selected:"",
       dataTable: [],
@@ -149,26 +150,32 @@ export default {
     addField(){
         if(this.fieldAdd.fieldName === ""){
           this.Alert = "Field name empty"
+          window.scrollTo(0, 0);
           return ""
         }
         if(this.fieldAdd.type===""){
           this.Alert = "Field type empty"
+          window.scrollTo(0, 0);
           return ""
         }
         if(this.fieldAdd.length ===""){
           this.Alert = "Field length empty"
+          window.scrollTo(0, 0);
           return ""
         }
         if(this.fieldAdd.length.length >4){
           this.Alert = "length max 9999"
+          window.scrollTo(0, 0);
           return ""
         }
         if(parseInt(this.fieldAdd.length) <= 0){
           this.Alert = "length minimum 1 "
+          window.scrollTo(0, 0);
           return ""
         }
         if(this.Create.fields.find(el=>{ return el.fieldName.toLowerCase() === this.fieldAdd.fieldName.toLowerCase()}) !== undefined){
             this.Alert = "Field name dupicate"
+            window.scrollTo(0, 0);
             return ""
         }else{
             this.Alert = ""
@@ -182,11 +189,15 @@ export default {
       this.fieldAdd.type = value
     },
     async schemaCreateUpdate() {
+      if(!confirm("Confirm")){
+        return ''
+      }
         if(this.showForm ===1){
 
         
         if( this.dataTable.find(el=>{ return el.schemaName.toLowerCase() === this.Create.schemaName.toLowerCase()}) !== undefined){
             this.Alert = "Schema name dupicate"
+            window.scrollTo(0, 0);
             return ""
         }
         }
@@ -216,6 +227,7 @@ export default {
         // return ''
         if(countDelete === this.Create.fields.length){
             this.Alert = "can't save schema without attribute"
+            window.scrollTo(0, 0);
             return ""
         }
         let result = []

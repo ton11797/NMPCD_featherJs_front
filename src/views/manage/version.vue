@@ -175,6 +175,9 @@ export default {
         : "dark";
     },
     async createVersionAPI(){
+      if(!confirm("Confirm")){
+        return ''
+      }
         if(this.Create.versionName.length <4){
           this.Alert="invalid version name"
           return ""
@@ -199,6 +202,9 @@ export default {
         this.fetchData();
     },
     async changeStatusAPI(){
+      if(!confirm("Confirm")){
+        return ''
+      }
         try {
           await api.version.changeState(this.Change.uuid,this.newStatus.toLowerCase())
           this.showChange = false
