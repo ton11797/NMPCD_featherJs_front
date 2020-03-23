@@ -250,6 +250,15 @@ export default {
         this.Alert = "";
         await this.fetchItems();
       } catch (error) {}
+      this.Import = {
+        schema: "",
+        fields: [],
+        tableFields: {},
+        item: {},
+        items: []
+      };
+      this.Importitems = [];
+      
     },
     removeRow(item) {
       this.Importitems.splice(item.index, 1);
@@ -288,7 +297,10 @@ export default {
         item: {},
         items: []
       };
-      if (e === "") return "";
+      if (e === ""){
+        this.Importitems = [];
+        return ""
+      }
       this.Import.schema = e;
       this.Import.fields = this.respond.result.schema[e].map(el => {
         let field = {

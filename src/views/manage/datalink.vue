@@ -6,12 +6,12 @@
       </CCardHeader>
       <CCardBody>
         <CAlert show color="danger" v-if="Alert!==''">{{Alert}}</CAlert>
-        <h3 v-if="!ASelected && !selected">Select Data A</h3>
-        <h3 v-if="ASelected && !selected">Select Data B from schema {{schemaB}}</h3>
+        <h3 v-if="!ASelected && !selected">Select Data source</h3>
+        <h3 v-if="ASelected && !selected">Select Data destination from schema {{schemaB}}</h3>
         <CRow class="form-group" v-if="ASelected">
           <CCol sm="6">
             <CCard>
-              <CCardHeader>Data A</CCardHeader>
+              <CCardHeader>Data source</CCardHeader>
               <CCardBody>
                 <showDetail :datas="dataDetailA"/>
               </CCardBody>
@@ -19,7 +19,7 @@
           </CCol>
           <CCol sm="6" v-if="selected">
             <CCard>
-              <CCardHeader>Data B</CCardHeader>
+              <CCardHeader>Data destination</CCardHeader>
               <CCardBody>
                 <showDetail :datas="dataDetailB"/>
               </CCardBody>
@@ -28,7 +28,7 @@
         </CRow>
         <CButtonGroup  class="float-right" v-if="selected">
           <CButton color="info" @click="linkData" >Link</CButton>
-          <CButton color="secondary" >Cancel</CButton>
+          <CButton color="secondary" @click="cancelLink">Cancel</CButton>
         </CButtonGroup>
       </CCardBody>
     </CCard>
@@ -58,12 +58,12 @@
           <template #action_button="item">
             <td>
               <CButtonGroup>
-                <CButton color="info" @click="selectA(schema,item.item)">Select A</CButton>
+                <CButton color="info" @click="selectA(schema,item.item)">Source</CButton>
                 <CButton
                   color="info"
                   v-if="ASelected &&  schemaB.includes(schema)"
                   @click="selectB(schema,item.item)"
-                >Select B</CButton>
+                >Destination</CButton>
                 <router-link :to="`/manage/data/${schema}/${item.item._uuid}`">
                   <CButton color="secondary">Detail</CButton>
                 </router-link>
@@ -130,6 +130,16 @@ export default {
     this.fetchData();
   },
   methods: {
+    cancelLink(){
+      this.A= {}
+      this.dataDetailA=[]
+      this.dataDetailB=[]
+      this.B= {}
+      this.schemaB= []
+      this.selected= false
+      this.ASelected= false
+      this.Alert= ""
+    },
     clear(){
       this.A = {}
         this.B = {}
@@ -138,6 +148,9 @@ export default {
         this.selected = false
     },
     async linkData(){
+      if(!confirm("Confirm")){
+        return ''
+      }
       const request = {
         node1:this.A.schema,
         node2:this.B.schema,
@@ -172,6 +185,8 @@ export default {
             value:item[el.fieldName.toLowerCase()]
         })
     })
+          window.scrollTo(0, 0);
+
     },
     selectB(schema, item) {
       if (this.schemaB.includes(schema)) {
@@ -186,6 +201,7 @@ export default {
         })
     })
       }
+          window.scrollTo(0, 0);
     },
     applyFilter(filter) {
       this.filterCriteria = filter;

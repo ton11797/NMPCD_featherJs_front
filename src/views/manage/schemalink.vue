@@ -28,7 +28,8 @@
                 </CButtonGroup>
               </CTab>
               <CTab title="Edit link">
-                <!-- 2. Lo rem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore -->
+                <!-- 2. Lo 
+                rem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore -->
               </CTab>
             </CTabs>
       </CCardBody>
@@ -81,6 +82,9 @@ export default {
       this.createLink.schema2=e
     },
     async createMetaLink(){
+      if(!confirm("Confirm")){
+        return ''
+      }
       const request = {
             "node1":this.createLink.schema1,
             "node2":this.createLink.schema2,
