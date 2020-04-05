@@ -67,6 +67,7 @@ const confirmationManage = () => import('@/views/manage/confirmation')
 const versionManage = () => import('@/views/manage/version')
 const userManage = () => import('@/views/manage/user')
 const systemManage = () => import('@/views/manage/system')
+const autoMapping = () => import('@/views/manage/AutoMapping')
 
 //test
 const testComponent = () => import('@/views/test')
@@ -143,6 +144,11 @@ function configRoutes () {
               path: 'confirmation',
               name: 'Confirmation Management',
               component: confirmationManage
+            },
+            {
+              path: 'autoMapping',
+              name: 'Auto Mapping Data',
+              component: autoMapping
             },
             {
               path: 'version',

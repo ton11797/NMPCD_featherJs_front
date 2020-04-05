@@ -2,7 +2,7 @@
   <div id="top">
       <CCard>
       <CCardHeader>
-        <CIcon name="cil-drop" />Confirm data
+        <CIcon name="cil-drop" />Auto Mapping Data
       </CCardHeader>
       <CCardBody>
 
@@ -15,7 +15,7 @@
 import _ from "lodash";
 import api from "@/API";
 export default {
-  name: "ComfirmationManagement",
+  name: "AutoMappingData",
   data() {
     return {
     };

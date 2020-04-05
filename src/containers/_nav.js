@@ -80,6 +80,13 @@ export default [
       },
       {
         _name: 'CSidebarNavItem',
+        name: 'Auto Mapping Data',
+        to: '/manage/autoMapping',
+        icon: 'cil-pencil',
+        requireAuth:true
+      },
+      {
+        _name: 'CSidebarNavItem',
         name: 'Version Management',
         to: '/manage/version',
         icon: 'cil-pencil',
