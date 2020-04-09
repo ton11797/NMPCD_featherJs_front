@@ -82,6 +82,11 @@ const api = {
             const respond = await axios.post('/systemManage/reset',{})
             return respond
         }
+    },
+    search:{
+        sd_search:async(request)=>{
+            return await axios.post('/search/sd-relate',request)
+        }
     }
 }
 export default api

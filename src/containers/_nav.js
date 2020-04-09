@@ -45,6 +45,13 @@ export default [
       },
       {
         _name: 'CSidebarNavItem',
+        name: 'Search Relate Data',
+        to: '/manage/searchRelate',
+        icon: 'cil-pencil',
+        requireAuth:true
+      },
+      {
+        _name: 'CSidebarNavItem',
         name: 'Schema Management',
         to: '/manage/schema',
         icon: 'cil-pencil',

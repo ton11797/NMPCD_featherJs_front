@@ -11,8 +11,10 @@
           <CButton  v-if="Object.keys(sourceData).length !== 0 && mode === 0" color="info" @click="confirm()">confirm</CButton>
           <div  v-if="mode === 1">
               <hr>
-              <h3>Select destination schema</h3>
+              <h3  v-if="find ===0">Select destination schema</h3>
+              <h3  v-if="find ===1">Related data in schema {{destination}}</h3>
               <CSelect
+                v-if="find ===0"
                 ref="selectSchema"
                 :key="componentKey"
                 label="Schema"
@@ -20,6 +22,11 @@
                 placeholder="Please select"
                 :options="data.nodes.filter(el=>{return el.schemaName !== sourceData.schema})"
                 />
+            <CButton  v-if="find ===0" color="info" @click="confirmFind()">Find relate data</CButton>
+            <div>
+                <CDataTable :items="relatedData" :fields="fieldResult[fieldResult.length-1]" pagination>
+                </CDataTable>
+            </div>
           </div>
       </CCardBody>
       </CCard>
@@ -80,13 +87,17 @@ export default {
       items: [],
       fields: [],
       fieldsArray: [],
+      fieldResult:[],
       Alert: "",
       schema: "",
       componentKey: 0,
       mode: 0,
       respond: {},
       sourceData:{},
-      sourceDataDetail:[]
+      sourceDataDetail:[],
+      destination:"",
+      find:0,
+      relatedData:[],
     };
   },
   computed: {
@@ -115,8 +126,40 @@ export default {
     this.fetchData();
   },
   methods: {
+    async confirmFind(){
+        this.find =1
+        const request = {
+            schemaName:this.sourceData.schema,
+            versionUUID:this.versionUUID,
+            destination:this.destination,
+            source:this.sourceData.item._uuid
+        }
+        let respond = null
+        try {
+        respond = (await api.search.sd_search(request))
+          .data;
+        } catch (error) {}
+        this.fieldResult = respond.shortestPath.map(el=>{
+            return this.respond.result.schema[el].map(ell => {
+                let field = {
+                    key: ell.fieldName.toLowerCase(),
+                    label: ell.fieldName
+                };
+                return field;
+            })
+        })
+        this.relatedData = respond.result.map(el=>{ return el[el.length-1]})
+    //     this.respond.result.schema[e].map(el => {
+    //     let field = {
+    //       key: el.fieldName.toLowerCase(),
+    //       label: el.fieldName
+    //     };
+    //     this.fieldsArray.push(el.fieldName)
+    //     return field;
+    //   });
+    },
     selectSchemaDestination(e){
-        console.log(e)
+        this.destination = e
     },
     confirm(){
         this.mode = 1

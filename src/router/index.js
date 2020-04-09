@@ -68,7 +68,7 @@ const versionManage = () => import('@/views/manage/version')
 const userManage = () => import('@/views/manage/user')
 const systemManage = () => import('@/views/manage/system')
 const autoMapping = () => import('@/views/manage/AutoMapping')
-
+const searchRelate = () => import('@/views/manage/SearchRelate')
 //test
 const testComponent = () => import('@/views/test')
 
@@ -139,6 +139,11 @@ function configRoutes () {
                   component: dataDetail,
                 },
               ]
+            },
+            {
+              path: 'searchRelate',
+              name: 'Search Relate Data',
+              component: searchRelate
             },
             {
               path: 'confirmation',
