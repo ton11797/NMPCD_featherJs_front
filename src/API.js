@@ -37,7 +37,11 @@ const api = {
             return await axios.post('/link/data-link',request)
         }
     },
-    confirm:{},
+    confirm:{
+        confirmgGet :async(request)=>{
+            return await axios.post('/confirm/confirm-get',request)
+        }
+    },
     data:{
         searchData:async(request)=>{
             return await axios.post('/data/search-data',request)
@@ -54,6 +58,9 @@ const api = {
         },
         insertFile:async(request)=>{
             return await axios.post('/data/insert-file',request)
+        },
+        editData:async(request)=>{
+            return await axios.post('/data/edit-data',request)
         }
     },
     user:{
@@ -86,6 +93,11 @@ const api = {
     search:{
         sd_search:async(request)=>{
             return await axios.post('/search/sd-relate',request)
+        }
+    },
+    auto:{
+        mapping:async(request)=>{
+            return await axios.post('/auto/mapping',request)
         }
     }
 }
