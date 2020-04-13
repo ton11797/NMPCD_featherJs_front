@@ -11,5 +11,8 @@ export default {
   },
   updateVersion: (state, payload) => {
     state.version = payload
+  },
+  userData:(state, payload) => {
+    state.user = payload
   }
 }

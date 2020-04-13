@@ -5,4 +5,5 @@ export default {
   sidebar:true,
   // version:{versionName:"test"},
   version:{},
+  user:{}
 }
