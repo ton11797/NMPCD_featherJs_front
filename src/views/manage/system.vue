@@ -16,8 +16,8 @@
           <CCardBody class="text-center" v-if="!loading">
             <CRow>
               <CCol sm="2" />
-              <CCol class="text-left" sm="4">
-                <label>Allow insert without confirm</label>
+              <CCol class="text-left" sm="5">
+                <label>Allow data manipulation without confirm</label>
                 <br />
                 <label>Allow mapping without confirm</label>
               </CCol>
