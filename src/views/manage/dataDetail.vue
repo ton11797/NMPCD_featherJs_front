@@ -5,7 +5,22 @@
         <CIcon name="cil-drop" />Data Detail
       </CCardHeader>
       <CCardBody>
+        <div v-if="!EditData">
           <showDetail :datas="dataDetail"/>
+          <CButton color="info" @click="showEdit(true)">Edit</CButton>
+        </div>
+        <div v-if="EditData">
+          <CInput
+                v-for="(el,index) in dataDetail"
+                v-bind:key="index"
+                :disabled="dataDetail[index].field==='UUID'"
+                :label="dataDetail[index].field"
+                v-model="EditedData[dataDetail[index].field.toLowerCase()]"
+                :value="dataDetail[index].value"
+              />
+          <CButton color="info" @click="submitEdit">Submit</CButton>
+          <CButton color="info" @click="showEdit(false)">Cancel</CButton>
+        </div>
       </CCardBody>
     </CCard>
     <CCard >
@@ -52,6 +67,8 @@ export default {
         currentRelationData:{},
         currentRelationDataLength:0,
         loading:true,
+        EditData:false,
+        EditedData:{}
     }
   },
   computed: {
@@ -72,6 +89,36 @@ export default {
     this.fetchData();
   },
   methods:{
+      async submitEdit(){
+        if(!confirm("Confirm")){
+        return ''
+        }
+        const request ={
+          versionUUID:this.versionUUID,
+          schemaName:this.$route.params.schema,
+          uuid:this.EditedData.uuid,
+          data:this.EditedData
+        }
+        try {
+          const respond = (await api.data.editData(request)).data;
+          console.log(respond)
+        } catch (error) {
+          
+        }
+        await this.fetchData();
+        this.EditData = false
+      },
+      async showEdit(mode){
+        if(mode){
+          this.EditData = true
+          this.EditedData = {}
+          this.dataDetail.map(el=>{
+            this.EditedData[el.field.toLowerCase()] = el.value
+          })
+        }else{
+          this.EditData = false
+        }
+      },
       async fetchData(){
         this.loading = true
           try {
