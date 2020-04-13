@@ -83,6 +83,7 @@ export default {
       try {
         this.respond = (await api.user.login(this.email,this.password)).data
         this.$store.commit('updateToken', this.respond.accessToken)
+        this.$store.commit('userData', this.respond.user)
         this.alert = ""
         this.$router.push('/')
       } catch (error) {
