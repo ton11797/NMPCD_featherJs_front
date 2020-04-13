@@ -24,7 +24,7 @@
                 />
             <CButton  v-if="find ===0" color="info" @click="confirmFind()">Find relate data</CButton>
             <div>
-                <CDataTable :items="relatedData" :fields="fieldResult[fieldResult.length-1]" pagination>
+                <CDataTable v-if="find !==0" :items="relatedData" :fields="fieldResult[fieldResult.length-1]" pagination>
                 </CDataTable>
             </div>
           </div>
