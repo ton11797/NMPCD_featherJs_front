@@ -1,9 +1,9 @@
 <template>
-  <CContainer class="d-flex align-items-center min-vh-100">
-    <CRow class="justify-content-center">
+  <CContainer class="align-items-center" >
+    <div style="height: 250px;"></div>
+    <CRow class="justify-content-center" style="height: 200px;">
       <CCol md="8">
-        <CCardGroup>
-          <CCard class="p-4">
+      <CCard>
             <CCardBody>
               <CForm>
                 <h1>Login</h1>
@@ -37,25 +37,7 @@
               <h6 v-if="alert!==''" class="text-danger">Username or password is incorrect</h6>
             </footer>
           </CCard>
-          <CCard
-            color="primary"
-            text-color="white"
-            class="text-center py-5 d-md-down-none"
-            style="width:44%"
-            body-wrapper
-          >
-            <h2>Sign up</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            <CButton
-              :disabled="false"
-              color="primary"
-              class="active mt-3"
-            >
-              Register Now!
-            </CButton>
-          </CCard>
-        </CCardGroup>
-      </CCol>
+          </CCol>
     </CRow>
   </CContainer>
 </template>

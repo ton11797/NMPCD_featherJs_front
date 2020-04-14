@@ -18,7 +18,13 @@
           </template>
       </CDataTable>
       </div>
-      {{confirmSelect}}
+      <div style="text-align:center;">
+        <CButtonGroup>
+        <CButton v-if='confirmSelect.selected !=0' color="success" @click="submitConfirm(0)">{{confirmSelect.selected == undefined?'Approve':'Change to Approve'}}</CButton>
+        <CButton v-if='confirmSelect.selected!=1' color="danger" @click="submitConfirm(1)">{{confirmSelect.selected == undefined?'Reject':'Change to Reject'}}</CButton>
+        </CButtonGroup>
+      </div>
+        
       <footer slot="footer">
         <CButton color="info" @click="Modal=false" >close</CButton>
       </footer>
@@ -42,7 +48,7 @@
         />
         <searchCriteria v-if="!showfilter" :data="fieldsArray" @applyFilter="applyFilter"/>
         <br>
-        <CDataTable v-if="items!==[] && schema !==''" :items="items" :fields="fields" pagination>
+        <CDataTable v-if="items!==[] && schema !==''" :items="items" :fields="fields" :key="componentKey2" pagination>
           <template #_approved="{item}">
             <td>
                 {{item._approved }}
@@ -102,11 +108,12 @@ export default {
       Alert: "",
       schema: "",
       componentKey: 0,
+      componentKey2: 0,
       mode: 0,
       respond: {},
       confirmSelect:{},
       userList:[],
-      dataDetail:[]
+      dataDetail:[],
     };
   },
   computed: {
@@ -128,10 +135,28 @@ export default {
     this.fetchData();
   },
   methods: {
+    async submitConfirm(action){
+      const request = {
+        versionUUID:"537eca50-57ca-11ea-892f-69ef0d1b8520",
+        confirmId:this.confirmSelect._id,
+        schemaName:this.schema,
+        action:action
+      }
+      try {
+        const respond = (await api.confirm.confirmData(request))
+          .data;
+      } catch (error) {}
+      this.Modal = false
+      await this.fetchItems()
+    },
     selectData(item){
       this.Modal = true
+      this.confirmSelect = {}
       this.confirmSelect = item
       this.userList = Object.keys(item._user).map(el=>{
+        if(this.$store.getters.getUser.email === item._user[el].email){
+          this.confirmSelect.selected = item._user[el].action
+        }
         return {
           userId:el,
           email:item._user[el].email,
@@ -234,7 +259,7 @@ export default {
           }
         })
       }
-      const respond = (await api.confirm.confirmgGet(request)).data[0];
+      const respond = (await api.confirm.confirmGet(request)).data[0];
       this.items = respond.rows;
       console.log(respond);
     }

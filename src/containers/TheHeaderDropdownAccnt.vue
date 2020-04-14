@@ -55,6 +55,9 @@ export default {
     logout(){
       console.log("logout")
       this.$store.commit('updateToken', null)
+      localStorage.token = null
+      localStorage.user = null
+       this.$router.push('/dashboard')
     }
   }
 }

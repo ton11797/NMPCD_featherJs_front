@@ -9,5 +9,8 @@ export default {
   },
   getVersion: state => {
     return state.version
+  },
+  getUser: state => {
+    return state.user
   }
 }

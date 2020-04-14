@@ -14,5 +14,6 @@ export default {
   },
   userData:(state, payload) => {
     state.user = payload
+    localStorage.user = JSON.stringify(payload)
   }
 }

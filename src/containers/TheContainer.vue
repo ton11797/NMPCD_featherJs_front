@@ -31,7 +31,9 @@ export default {
   },
   beforeCreate(){
     if(localStorage.getItem("token")!== null){
+      console.log("RUNRUNRUNRUNRUNRUNRUNRUNRUNRUNRUN")
       this.$store.commit('updateToken', localStorage.getItem("token"))
+      this.$store.commit('userData', JSON.parse(localStorage.getItem("user")))
     }
   }
 }

@@ -38,8 +38,11 @@ const api = {
         }
     },
     confirm:{
-        confirmgGet :async(request)=>{
+        confirmGet :async(request)=>{
             return await axios.post('/confirm/confirm-get',request)
+        },
+        confirmData :async(request)=>{
+            return await axios.post('/confirm/confirm-data',request)
         }
     },
     data:{
