@@ -99,6 +99,11 @@ const api = {
         mapping:async(request)=>{
             return await axios.post('/auto/mapping',request)
         }
+    },
+    dashboard:{
+        update:async(request)=>{
+            return await axios.post('/dashboard/update',request)
+        }
     }
 }
 export default api

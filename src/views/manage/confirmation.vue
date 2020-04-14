@@ -1,5 +1,28 @@
 <template>
   <div>
+    <CModal
+      title="Confirm data"
+      color="warning"
+      size="xl"
+      :show.sync="Modal"
+    >
+      <showDetail :datas="dataDetail"/>
+      <hr/>
+      <div class="text-center">
+      <h1>Approve:{{confirmSelect._approved}} ---- Reject:{{confirmSelect._count-confirmSelect._approved}}</h1>
+      <CDataTable :items="userList" :fields="[{key: 'email',label: 'Email'},{key: 'action',label: 'Result'}]" pagination>
+        <template #action="{item}">
+            <td>
+                {{item.action===0?'Approved':'Rejected'}}
+            </td>
+          </template>
+      </CDataTable>
+      </div>
+      {{confirmSelect}}
+      <footer slot="footer">
+        <CButton color="info" @click="Modal=false" >close</CButton>
+      </footer>
+    </CModal>
     <CCard>
       <CCardHeader>
         <CIcon name="cil-drop" />Confirmation Management
@@ -22,7 +45,12 @@
         <CDataTable v-if="items!==[] && schema !==''" :items="items" :fields="fields" pagination>
           <template #_approved="{item}">
             <td>
-                {{item._approved+'/3' }}
+                {{item._approved }}
+            </td>
+          </template>
+          <template #_count="{item}">
+            <td>
+                {{item._count-item._approved }}
             </td>
           </template>
           <template #_status="{item}">
@@ -60,6 +88,7 @@ export default {
   },
   data() {
     return {
+      Modal:false,
       filterCriteria:{},
       showfilter:false,
       data: {
@@ -75,6 +104,9 @@ export default {
       componentKey: 0,
       mode: 0,
       respond: {},
+      confirmSelect:{},
+      userList:[],
+      dataDetail:[]
     };
   },
   computed: {
@@ -90,13 +122,6 @@ export default {
       this.schema = "";
       this.items = [];
       this.fields = [];
-      this.Import = {
-        schema: "",
-        fields: [],
-        tableFields: {},
-        item: {}
-      };
-      this.Importitems = [];
     }
   },
   beforeMount() {
@@ -104,7 +129,20 @@ export default {
   },
   methods: {
     selectData(item){
-      console.log(item)
+      this.Modal = true
+      this.confirmSelect = item
+      this.userList = Object.keys(item._user).map(el=>{
+        return {
+          userId:el,
+          email:item._user[el].email,
+          action:item._user[el].action,
+          _classes:item._user[el].action===0?"table-success":"table-danger"
+        }
+      })
+      this.dataDetail = []
+      this.fieldsArray.map(el=>{
+            this.dataDetail.push({field:el,value:item[el.toLowerCase()]})
+      })
     },
     applyFilter(filter){
       this.filterCriteria = filter
@@ -125,6 +163,13 @@ export default {
       this.fields.push({
         key: "_approved",
         label: "Approved",
+        _style: "width:1%",
+        sorter: false,
+        filter: false
+      });
+      this.fields.push({
+        key: "_count",
+        label: "Reject",
         _style: "width:1%",
         sorter: false,
         filter: false
