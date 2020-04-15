@@ -164,6 +164,7 @@ export default {
       } catch (error) {
         this.Alert = error
       }
+      this.Alert = ""
     },
     selectA(schema, item) {
       this.A.schema = schema;

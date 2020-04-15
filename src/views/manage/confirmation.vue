@@ -137,7 +137,7 @@ export default {
   methods: {
     async submitConfirm(action){
       const request = {
-        versionUUID:"537eca50-57ca-11ea-892f-69ef0d1b8520",
+        versionUUID:this.versionUUID,
         confirmId:this.confirmSelect._id,
         schemaName:this.schema,
         action:action

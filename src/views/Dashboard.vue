@@ -69,7 +69,7 @@
               <td slot="RelateCount" slot-scope="{item}">
                 <div class="clearfix">
                   <div class="float-left">
-                    <strong>{{item.RelateCount.per}}% Linked</strong>
+                    <strong>{{item.RelateCount.per}}% Confirmed</strong>
                   </div>
                   <div class="float-right">
                     <small class="text-muted">{{item.dataCount}}</small>
@@ -118,7 +118,7 @@ export default {
       tableFields: [
         { key: 'Schema' },
         { key: 'dataCount', label: 'Data', _classes: 'text-center' },
-        { key: 'WaitCount', label: 'Confirm', _classes: 'text-center' },
+        { key: 'WaitCount', label: 'Data', _classes: 'text-center' },
         { key: 'RelateCount', label: 'Relation', _classes: 'text-center' },
       ]
     }

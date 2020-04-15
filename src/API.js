@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = process.env.NODE_ENV === 'production'?'http://nmpcd.devinice.com:443':'http://127.0.0.1:3030'
+axios.defaults.baseURL = process.env.NODE_ENV === 'production'?'http://nmpcd.devinice.com:3030':'http://127.0.0.1:3030'
 axios.defaults.withCredentials = true
 let token ="test"
 const api = {
@@ -101,6 +101,9 @@ const api = {
     auto:{
         mapping:async(request)=>{
             return await axios.post('/auto/mapping',request)
+        },
+        getMapping:async(version)=>{
+            return await axios.get(`/auto/mapping?version=${version}`)
         }
     },
     dashboard:{
