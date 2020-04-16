@@ -19,7 +19,7 @@
       </CDataTable>
       </div>
       <div style="text-align:center;">
-        <CButtonGroup>
+        <CButtonGroup v-if="confirmSelect._status ===0">
         <CButton v-if='confirmSelect.selected !=0' color="success" @click="submitConfirm(0)">{{confirmSelect.selected == undefined?'Approve':'Change to Approve'}}</CButton>
         <CButton v-if='confirmSelect.selected!=1' color="danger" @click="submitConfirm(1)">{{confirmSelect.selected == undefined?'Reject':'Change to Reject'}}</CButton>
         </CButtonGroup>
@@ -31,7 +31,7 @@
     </CModal>
     <CCard>
       <CCardHeader>
-        <CIcon name="cil-drop" />Confirmation Management
+        <CIcon name="cil-drop" />Confirmation Data
       </CCardHeader>
       <CCardBody>
         <CButtonGroup class="float-right">

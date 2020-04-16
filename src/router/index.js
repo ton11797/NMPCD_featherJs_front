@@ -63,7 +63,8 @@ const schemaLinkManage = () => import('@/views/manage/schemalink')
 const dataLinkManage = () => import('@/views/manage/datalink')
 const dataManage = () => import('@/views/manage/data')
 const dataDetail = () => import('@/views/manage/dataDetail')
-const confirmationManage = () => import('@/views/manage/confirmation')
+const confirmationData = () => import('@/views/manage/confirmation')
+const confirmationDataLink = () => import('@/views/manage/confirmationLink')
 const versionManage = () => import('@/views/manage/version')
 const userManage = () => import('@/views/manage/user')
 const systemManage = () => import('@/views/manage/system')
@@ -147,8 +148,13 @@ function configRoutes () {
             },
             {
               path: 'confirmation',
-              name: 'Confirmation Management',
-              component: confirmationManage
+              name: 'Confirmation Data',
+              component: confirmationData
+            },
+            {
+              path: 'confirmationLink',
+              name: 'Confirmation Data Link',
+              component: confirmationDataLink
             },
             {
               path: 'autoMapping',

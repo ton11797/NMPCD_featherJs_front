@@ -80,8 +80,15 @@ export default [
       },
       {
         _name: 'CSidebarNavItem',
-        name: 'Confirmation Management',
+        name: 'Confirmation Data',
         to: '/manage/confirmation',
+        icon: 'cil-pencil',
+        requireAuth:true
+      },
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Confirmation Data Link',
+        to: '/manage/confirmationLink',
         icon: 'cil-pencil',
         requireAuth:true
       },

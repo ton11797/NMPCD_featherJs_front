@@ -1,5 +1,68 @@
 <template>
   <div id="top">
+    <CModal
+      title="Confirm data"
+      color="warning"
+      size="xl"
+      :show.sync="Modal"
+    >
+     
+       <div slot="body-wrapper" class="text-center">
+         <CDataTable
+              class="mb-0 table-outline"
+              hover
+              :items="[itemSelected]"
+              :fields="tableFields"
+              head-color="light"
+              no-sorting
+            >
+            <td slot="Sourece" slot-scope="{item}">
+              {{item.detail.node1}}
+            </td>
+            <td slot="Destination" slot-scope="{item}">
+              {{item.detail.node2}}
+            </td>
+            <td slot="FieldMap" slot-scope="{item}">
+              {{item.detail.fieldMap}}
+
+            </td>
+            <td slot="RelateCount" slot-scope="{item}">
+              {{item.detail.relateCount}}
+
+            </td>
+            <td slot="status" slot-scope="{item}">
+              {{item.detail.status===0?'Finish':item.detail.status===1?'Linked':item.detail.status===2?'Move to confirm':'Error'}}
+
+            </td>
+            <td slot="runData" slot-scope="{item}">
+              {{new Date(item.detail.timeStart).toLocaleString()}}
+
+            </td>
+            <td slot="runTime" slot-scope="{item}">
+              {{Math.ceil((Math.floor((item.detail.timeEnd-item.detail.timeStart)/1000))/60)}} minutes
+            </td>
+            <td slot="action">
+                
+            </td>
+        </CDataTable>
+        <hr>
+       <CRow>
+         <CCol sm="4">
+      </CCol>
+      <CCol sm="5">
+        <CButton color="info" @click="act(1,itemSelected._id)" >Link data</CButton>
+        <CButton color="info" @click="act(2,itemSelected._id)" >Move to confirm</CButton>
+        <CButton color="info" @click="act(3,itemSelected._id)" >Remove</CButton>
+      </CCol>
+      <CCol sm="4">
+      </CCol>
+     </CRow>
+     <hr>
+       </div>
+      <footer slot="footer">
+        <CButton color="info" @click="Modal=false" >close</CButton>
+      </footer>
+    </CModal>
       <CCard>
       <CCardHeader>
         <CIcon name="cil-drop" />Auto Mapping Data
@@ -78,7 +141,7 @@
               {{Math.ceil((Math.floor((item.detail.timeEnd-item.detail.timeStart)/1000))/60)}} minutes
             </td>
             <td slot="action" slot-scope="{item}">
-                <CButton color="info" >Action</CButton>
+                <CButton v-if="item.detail.status===0" color="info" @click="showAction(item)">Action</CButton>
             </td>
 
         </CDataTable>
@@ -122,7 +185,9 @@ export default {
         { key: 'runData', label: 'Run date'},
         { key: 'runTime', label: 'Run Time'},
         { key: 'action', label: ''},
-      ]
+      ],
+      Modal:false,
+      itemSelected:{}
     };
   },
   beforeMount() {
@@ -147,7 +212,26 @@ export default {
     this.fetchData();
   },
   methods: {
+    async act(action,_id){
+      if(!confirm("Confirm")){
+        return ''
+      }
+      try {
+        await api.auto.act({action,_id})
+      } catch (error) {
+        
+      }
+      await this.fetchData();
+      this.Modal=false
+    },
+    async showAction(item){
+      this.Modal = true
+      this.itemSelected = item
+    },
     async autoMapping(){
+      if(!confirm("Confirm")){
+        return ''
+      }
       const request = {
         versionUUID:this.versionUUID,
         node1:this.schemaS,
@@ -210,6 +294,7 @@ export default {
       try {
         this.config = (await api.system.getConfig()).data
         this.autoResult = (await api.auto.getMapping(this.versionUUID)).data
+        this.autoResult.sort((a, b) => a.detail.status - b.detail.status);
         this.running = this.config.autoMapping.running
         const respond = (await api.schema.getSchemaVersion(this.versionUUID))
           .data;

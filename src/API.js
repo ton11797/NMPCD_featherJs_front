@@ -41,8 +41,14 @@ const api = {
         confirmGet :async(request)=>{
             return await axios.post('/confirm/confirm-get',request)
         },
+        confirmGetLink :async(para)=>{
+            return await axios.get('/confirm/confirm-link?'+para)
+        },
         confirmData :async(request)=>{
             return await axios.post('/confirm/confirm-data',request)
+        },
+        confirmDataLink :async(request)=>{
+            return await axios.post('/confirm/confirm-link',request)
         }
     },
     data:{
@@ -77,6 +83,10 @@ const api = {
             // eslint-disable-next-line require-atomic-updates
             axios.defaults.headers.common['Authorization'] = respond.data.accessToken;
             return respond
+        },
+        getUser:async()=>{
+            const respond = await axios.get('/users')
+            return respond
         }
     },
     system:{
@@ -104,6 +114,9 @@ const api = {
         },
         getMapping:async(version)=>{
             return await axios.get(`/auto/mapping?version=${version}`)
+        },
+        act:async(request)=>{
+            return await axios.post(`/auto/act`,request)
         }
     },
     dashboard:{
