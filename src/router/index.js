@@ -102,7 +102,7 @@ function configRoutes () {
         },
         {
           path: '/manage',
-          redirect: '/manage/schema',
+          redirect: '/dashboard',
           name: 'Management',
           component: {
             render (c) { return c('router-view') }

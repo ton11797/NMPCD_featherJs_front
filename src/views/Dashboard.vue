@@ -33,10 +33,10 @@
                     </CCallout>
                   </CCol>
                   <CCol sm="6">
-                    <CCallout color="success">
+                    <!-- <CCallout color="success">
                       <small class="text-muted">Organic</small><br>
                       <strong class="h4">49,123</strong>
-                    </CCallout>
+                    </CCallout> -->
                   </CCol>
                 </CRow>
               </CCol>
@@ -72,7 +72,7 @@
                     <strong>{{item.RelateCount.per}}% Confirmed</strong>
                   </div>
                   <div class="float-right">
-                    <small class="text-muted">{{item.dataCount}}</small>
+                    <small class="text-muted">{{item.RelateCount.count}}</small>
                   </div>
                 </div>
                 <CProgress
